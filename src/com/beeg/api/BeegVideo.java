@@ -19,11 +19,17 @@ public class BeegVideo {
 	public enum BeegQuality{Best, Good, Fast}
 	
 	private String ID, source;
-	private float percentage;
 	
-	public BeegVideo(String ID) throws Exception{
+	public BeegVideo(String ID){
 		this.ID = ID;
-		Scanner sc = new Scanner(new URL("http://www.beeg.com/" + ID).openStream(), "UTF-8");
+		Scanner sc = null;
+		try {
+			sc = new Scanner(new URL("http://www.beeg.com/" + ID).openStream(), "UTF-8");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		source = sc.useDelimiter("\\A").next();
 		sc.close();
 	}
@@ -115,11 +121,7 @@ public class BeegVideo {
 		String date = matcher.group(1);
 		return date;
 	}
-	
-	public float getDownloadPercentage(){
-		return percentage;
-	}
-	
+		
 	public void download(String path, BeegQuality quality, StandardCopyOption option) throws Exception {
 		downloadUsingStream(getURL(quality), path + "/" + ID + ".mp4");
 	}
