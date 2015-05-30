@@ -40,8 +40,3 @@ System.out.println(video.getBestQualityInPixels());
 
 //Show the best quality available (fast/good/best)
 System.out.println(video.getBestQuality());
-<<<<<<< HEAD
-```
-=======
-```
->>>>>>> 76e78366b3ac47c4e7cf1fc83538c552f7336108
