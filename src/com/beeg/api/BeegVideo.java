@@ -3,13 +3,10 @@ package com.beeg.api;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -124,31 +121,15 @@ public class BeegVideo {
 	}
 	
 	public void download(String path, BeegQuality quality, StandardCopyOption option) throws Exception {
-		URLConnection urlCo = new URL(getURL(quality)).openConnection();
-		
-		long len = urlCo.getContentLengthLong();
-		long len2 = 0;
-		
-		DownloadUsingStream downloadUsingStream = new DownloadUsingStream(getURL(quality), path + "/" + ID + ".mp4");
-		
-		File f = new File(path);
-		
-		while(len2 != len){
-			len2 = f.length();
-		
-			percentage = len2/len;
-		}
-		
-		
+		downloadUsingStream(getURL(quality), path + "/" + ID + ".mp4");
 	}
 	
 	public void download(String path, String name, BeegQuality quality, StandardCopyOption option) throws Exception{
-		//downloadUsingStream(getURL(quality), path + "/" + name + ".mp4");
+		downloadUsingStream(getURL(quality), path + "/" + name + ".mp4");
 	}
-	/*
+	
 	
 	private void downloadUsingStream(String urlStr, String file) throws IOException{
-		
         URL url = new URL(urlStr);
         BufferedInputStream bis = new BufferedInputStream(url.openStream());
         FileOutputStream fis = new FileOutputStream(file);
@@ -160,70 +141,5 @@ public class BeegVideo {
         }
         fis.close();
         bis.close();
-    }*/
+    }
 }
-
-class DownloadUsingStream extends Thread {
-	   
-	String urlStr, file;
-	
-	float percentage;
-	
-	   public DownloadUsingStream(String urlStr, String file) {
-		   	this.urlStr = urlStr;
-		   	this.file = file;
-		   	percentage = 0;
-	   }
-	   
-	   public float getPercentage(){
-		   return percentage;
-	   }
-	   
-	   public void run () {
-		   URL url = null;
-		try {
-			url = new URL(urlStr);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-	       BufferedInputStream bis = null;
-	       
-	       try {
-			bis = new BufferedInputStream(url.openStream());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	       
-	       FileOutputStream fis = null;
-		try {
-			fis = new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	       byte[] buffer = new byte[1024];
-	       int count=0;
-	       try {
-			while((count = bis.read(buffer,0,1024)) != -1)
-			   {
-			       fis.write(buffer, 0, count);
-			   }
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	       try {
-			fis.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	       try {
-			bis.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	   }
-	}
