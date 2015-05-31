@@ -2,12 +2,9 @@ package com.beeg.api;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,20 +59,19 @@ public class BeegVideo {
 		return img;
 	}
 	
-	public String getURLThumbnail(){
+	public String getThumbnailURL(){
 		return "http://img.beeg.com/236x177/" + ID + ".jpg";
 	}
 	
-	public String getURLThumbnail(int width, int height){
+	public String getThumbnailURL(int width, int height){
 		return "http://img.beeg.com/" + width + "x" + height + "/" + ID + ".jpg";
 	}
 	
-	
 	public BeegQuality getBestQuality(){
-		Matcher matcher = Pattern.compile("'720p': '(?<Video>[\\s\\S]*?)'").matcher(source);
+		Matcher matcher = Pattern.compile("'720p': '(.*)'").matcher(source);
 		if(matcher.find())
 			return BeegQuality.Best;
-		matcher = Pattern.compile("'480p': '(?<Video>[\\s\\S]*?)'").matcher(source);
+		matcher = Pattern.compile("'480p': '(.*)'").matcher(source);
 		if(matcher.find())
 			return BeegQuality.Good;
 		return BeegQuality.Fast;
@@ -89,17 +85,17 @@ public class BeegVideo {
 	public String getURL(BeegQuality quality){
 		String url = "";
 		if(quality == BeegQuality.Best){
-	       	Matcher matcher = Pattern.compile("'720p': '(?<Video>[\\s\\S]*?)'").matcher(source);
+	       	Matcher matcher = Pattern.compile("'720p': '(.*)'").matcher(source);
 	       	if(matcher.find())
 	      		url = matcher.group(1);
 		}
 		if(quality == BeegQuality.Good || (url == "" && quality == BeegQuality.Best)){
-    		Matcher matcher = Pattern.compile("'480p': '(?<Video>[\\s\\S]*?)'").matcher(source);
+    		Matcher matcher = Pattern.compile("'480p': '(.*)'").matcher(source);
     		if(matcher.find())
     			url = matcher.group(1);
         }
         if(quality == BeegQuality.Fast || url == ""){
-        	Matcher matcher = Pattern.compile("'240p': '(?<Video>[\\s\\S]*?)'").matcher(source);
+        	Matcher matcher = Pattern.compile("'240p': '(.*)'").matcher(source);
     		matcher.find();
     		url = matcher.group(1);
         }
@@ -122,26 +118,10 @@ public class BeegVideo {
 		return date;
 	}
 		
-	public void download(String path, BeegQuality quality, StandardCopyOption option) throws Exception {
-		downloadUsingStream(getURL(quality), path + "/" + ID + ".mp4");
-	}
-	
-	public void download(String path, String name, BeegQuality quality, StandardCopyOption option) throws Exception{
-		downloadUsingStream(getURL(quality), path + "/" + name + ".mp4");
-	}
-	
-	
-	private void downloadUsingStream(String urlStr, String file) throws IOException{
-        URL url = new URL(urlStr);
-        BufferedInputStream bis = new BufferedInputStream(url.openStream());
-        FileOutputStream fis = new FileOutputStream(file);
-        byte[] buffer = new byte[1024];
-        int count=0;
-        while((count = bis.read(buffer,0,1024)) != -1)
-        {
-            fis.write(buffer, 0, count);
-        }
-        fis.close();
-        bis.close();
+	public String getID()
+    {
+        return ID;
     }
+	
+	
 }
