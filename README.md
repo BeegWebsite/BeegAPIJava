@@ -52,6 +52,8 @@ System.out.println("Best quality (BeegQuality) : " + video.getBestQuality());
 ```java
 //Declare new BeegVideoDownloader
 BeegVideoDownloader videoDownloader = new BeegVideoDownloader("7241201");
+//Or
+BeegVideoDownloader videoDownloader = new BeegVideoDownloader(new BeegVideo("7241201"));
 	
 //Add new DownloadEventListener
 videoDownloader.addDownloadEventListener(new DownloadEventListener(){
