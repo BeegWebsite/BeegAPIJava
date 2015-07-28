@@ -20,10 +20,27 @@ public class BeegVideoDownloader {
 	public BeegVideoDownloader(String ID){
 		this.ID = ID;
 		video = new BeegVideo(ID);
+		load();
+	}
+	
+	public BeegVideoDownloader(BeegVideo video)
+	{
+		this.video = video;
+		this.ID = this.video.getID();
+		load();
+	}
+	
+	private void load()
+	{
+		video.load();
 	}
 	
 	public BeegVideo getVideo(){
 		return video;
+	}
+	
+	public String getID(){
+		return ID;
 	}
 	
 	public void addDownloadEventListener(final DownloadEventListener listener){
