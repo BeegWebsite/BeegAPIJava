@@ -13,6 +13,9 @@ Because Beeg is a fucking awesome website.
 //Declare new BeegVideo
 BeegVideo video = new BeegVideo("7241201");
 
+//Load all information
+video.load();
+
 //Show the title
 System.out.println("Title : " + video.getTitle());
 
@@ -37,10 +40,10 @@ Image thumbnail = video.getThumbnail();
 //Save the video as mp4
 video.download("C:/downloads", BeegVideo.BeegQuality.Best, StandardCopyOption.REPLACE_EXISTING);
 	
-//Show the best quality available (240/360/720)
+//Show the best quality available (240/360/720 or -1 if error)
 System.out.println("Best quality (pixels) : " + video.getBestQualityInPixels());
 
-//Show the best quality available (fast/good/best)
+//Show the best quality available (fast/good/best or null if error)
 System.out.println("Best quality (BeegQuality) : " + video.getBestQuality());
 ```
 
